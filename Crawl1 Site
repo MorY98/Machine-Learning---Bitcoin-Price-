@@ -1,5 +1,8 @@
 from bs4 import BeautifulSoup
-import requests 
+import requests
+
+# creates dataframes
+import pandas as pd
 
 date = []
 MarketCap = []
@@ -31,3 +34,6 @@ MarketCapFinal = list(OrderedDict.fromkeys(MarketCap))
 ValumeFinal = list(OrderedDict.fromkeys(valume))
 OpenFinal = list(OrderedDict.fromkeys(open1))
 CloseFinal = list(OrderedDict.fromkeys(close1))
+
+zipped = list(zip(date, MarketCapFinal, ValumeFinal, OpenFinal, CloseFinal))
+df = pd.DataFrame(zipped, columns=['date', 'MarketCapFinal', 'ValumeFinal','OpenFinal','CloseFinal'])
