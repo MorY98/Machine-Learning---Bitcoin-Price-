@@ -58,6 +58,4 @@ for i in range(0,len(Dates1)):
         day = "0{}".format(day)
     year = tst.rsplit('/')[2]
     FinelD = "{}-{}-{}".format(year,month,day) 
-    print(FinelD)
-  
-  
+    Dates1[i] = FinelD
