@@ -64,3 +64,9 @@ for i in range(0,len(Dates1)):
     year = tst.rsplit('/')[2]
     FinelD = "{}-{}-{}".format(year,month,day) 
     Dates1[i] = FinelD
+    
+MeanHigh_Low = []
+MeanOpen_Close = []
+for i in range(0,len(Open1)):
+    MeanHigh_Low.append((int(Low1[i]) + int(High1[i]))/2)
+    MeanOpen_Close.append((int(Open1[i]) + int(Close1[i]))/2) 
