@@ -1,0 +1,35 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
+import time
+driver = webdriver.Chrome()
+lines = []
+
+for i in range(1,5):
+    url = "https://nomics.com/assets/btc-bitcoin/history/{}".format(i)
+    browser = driver.get(url)
+    elements = driver.find_elements(By.TAG_NAME, 'tr')    
+    for line in elements:
+        lines.append(line.text)
+ColumnName = []
+Dates1 = []
+Open1 = []
+High1 = []
+Low1 = []
+Close1 = []
+Volume1 = []
+for i in range(0,6):
+    ColumnName.append(lines[0].rsplit('\n')[i])
+y = 1
+for i in range (1,len(lines)):
+    Dates1.append(lines[y].rsplit('\n')[0])
+    Open1.append(lines[y].rsplit('\n')[1])
+    High1.append(lines[y].rsplit('\n')[2])
+    Low1.append(lines[y].rsplit('\n')[3])
+    Close1.append(lines[y].rsplit('\n')[4])
+    Volume1.append(lines[y].rsplit('\n')[5])
+    y = y + 1
