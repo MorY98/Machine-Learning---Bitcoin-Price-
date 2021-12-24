@@ -70,3 +70,19 @@ MeanOpen_Close = []
 for i in range(0,len(Open1)):
     MeanHigh_Low.append((int(Low1[i]) + int(High1[i]))/2)
     MeanOpen_Close.append((int(Open1[i]) + int(Close1[i]))/2) 
+    
+PyTredsData = []
+PyTredsDataDon = []
+import pandas as pd                        
+from pytrends.request import TrendReq
+pytrends = TrendReq()
+kw_list = ["bitcoin"] 
+# build the payload
+
+for i in range(0, len(Dates1)-1):
+    timeframe2 ="{} {}".format(Dates1[i+1],Dates1[i])
+    pytrends.build_payload(kw_list, timeframe="{} {}".format(Dates1[i+1],Dates1[i]))
+    r = pytrends.interest_over_time().mean()
+    PyTredsData.append(r)
+for i in range(2, len(PyTredsData)):
+    PyTredsDataDon.append(PyTredsData[i]["bitcoin"])   
