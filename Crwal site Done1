@@ -47,6 +47,11 @@ for i in range(0,len(Dates1)):
     Low1[i] = re.sub(r"[$,]","", Low1[i])
     Close1[i] = re.sub(r"[$,]","", Close1[i])
     Volume1[i] = re.sub(r"[$B]","", Volume1[i])  
+    int(Open1[i])
+    int(High1[i])
+    int(Low1[i])
+    int(Close1[i])
+    float(Volume1[i])
     
 for i in range(0,len(Dates1)):
     tst = Dates1[i]
