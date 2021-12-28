@@ -1,60 +1,35 @@
-import pandas as pd 
+import snscrape.modules.twitter as sntwitter
+
 import re
 from textblob import TextBlob
 
-from searchtweets import gen_rule_payload
-from searchtweets import collect_results
-from searchtweets import load_credentials
-import yaml
+# maximum tweets of a day 
+maxTweets = 50
+# Creating list to append tweet data to
+tweets_list2 = []
+Tweets_PerDay_done =[]
 
+# count the total 
+ListPositive = []
+ListNegative =[]
 
-config = dict(
-    search_tweets_api = dict(
-        account_type = 'premium',
-        endpoint = 'https://api.twitter.com/1.1/tweets/search/fullarchive/development.json', consumer_key= 'AujCCZHORoxn7Sadjjpuvu44a',
-        consumer_secret = 'QgVvl4ZCOvecJVjPMTM0O3eVhve2gdQHZ30eJwzDT0feWwzeFI'
-    )
-)
-
-with open('twitter_keys_30days.yaml', 'w') as config_file:
-    yaml.dump(config, config_file, default_flow_style=False)
-    
-premium_search_args = load_credentials("twitter_keys_30days.yaml",
-                                       yaml_key="search_tweets_api",
-                                       env_overwrite=False)
-
-rule = gen_rule_payload("from:bitcoin",
-                        from_date="2012-11-02", #UTC 2017-09-01 00:00
-                        to_date="2012-11-29",#UTC 2017-10-30 00:00
-                        results_per_call=100)
-
-
-#rs = ResultStream(rule_payload=rule, max_results=100,**premium_search_args)
-
-tweets = collect_results(rule,
-                         max_results = 100,
-                         result_stream_args=premium_search_args)
-                         
-                         
-TweetListsforday = []
-TweetListsforday_done = []
-TweetListscountForDay = []
-for tweet in tweets:
-    TweetListsforday.append(tweet.text)
-
-num = len(TweetListsforday)
-TweetListscountForDay.append(num)
-
-def clean_tweet(tweet): 
-    return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
+for i in range((Date1)-1):
+# Using TwitterSearchScraper to scrape data and append tweets to list
+    for i,tweet in enumerate(sntwitter.TwitterSearchScraper("#bitcoin since:{} until:{} lang:en -filter:links -filter:replies".format(Date1[i],Date1[i+1])).get_items()):
+        if i > maxTweets:
+            break
+        else:
+            tweets_list2.append(tweet.content
   
-for i in TweetListsforday:
-    te = clean_tweet(i)
-    TweetListsforday_done.append(te)
-    
-    
-    
-for i in TweetListsforday_done: 
+for i in tweets_list2:
+    new_twee = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", i).split())
+    Tweets_PerDay_done.append(new_twee)
+
+
+positive = 0
+#test
+negative = 0
+for i in Tweets_PerDay_done: 
     analysis = TextBlob(i)
         # set sentiment
     if analysis.sentiment.polarity > 0:
@@ -64,11 +39,5 @@ for i in TweetListsforday_done:
     elif analysis.sentiment.polarity < 0:
         negative += 1
         
-df1 = pd.DataFrame({"Tweets":TweetListscountForDay})
-
-ListPositive = []
-ListNegative =[]
 ListPositive.append(positive) 
 ListNegative.append(negative)
-    
-df3 = pd.DataFrame({"positive":ListPositive, "negative":ListNegative})
