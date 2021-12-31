@@ -91,15 +91,14 @@ for i in range(0,len(Dates1)):
     High1[i] = re.sub(r"[$,]","", High1[i])
     Low1[i] = re.sub(r"[$,]","", Low1[i])
     Close1[i] = re.sub(r"[$,]","", Close1[i])
-    Volume1[i] = re.sub(r"[$B]","", Volume1[i]) 
+    Volume1[i] = re.sub(r"[$MB]","", Volume1[i]) 
     
-    #Not Works Yet
-    # Convert String To Int 
-    int(Open1[i])
-    int(High1[i])
-    int(Low1[i])
-    int(Close1[i])
-    float(Volume1[i])
+    # Convert String 
+    Open1[i] = float(Open1[i])
+    High1[i] = float(High1[i])
+    Low1[i] = float(Low1[i])
+    Close1[i] = float(Close1[i])
+    Volume1[i] = float(Volume1[i])
 
 
 # In[8]:
@@ -123,10 +122,10 @@ for i in range(0,len(Dates1)):
 
 
 #Enter New Columns Names Befor Starting
-ColumnName.append("MeanHigh_Low")
-ColumnName.append("MeanOpen_Close")
-ColumnName.append("PyTredsData")
-ColumnName.append("UP-DOWN")
+ColumnName.append("MEAN HIGH-LOW")
+ColumnName.append("MEAN CLOSE-OPEN")
+ColumnName.append("TRENDS MEAN")
+ColumnName.append("UP|DOWN")
 
 
 # In[10]:
@@ -174,8 +173,8 @@ for i in range(0, len(Open1)):
 
 
 #Add New Column Name For Tweets
-ColumnName.append("POS")
-ColumnName.append("NEGA")
+ColumnName.append("POSITVE ANALZE TWEETS")
+ColumnName.append("NEGATIVE ANALZE TWEETS")
 
 
 # In[14]:
@@ -191,14 +190,15 @@ import re
 from textblob import TextBlob
 
 # Tweets For Once 
-maxTweets = 50
+maxTweets = 1000
 
 # count the total 
 ListPositive = []
 ListNegative =[]
 
+#Intial Postive
 positive = 0
-#test
+#Neg 
 negative = 0
 #Loop The Dates Arrays
 for x in range(0,len(Dates1)-1):
